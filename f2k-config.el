@@ -16,6 +16,9 @@
 
 (require 'darkokai-theme)
 (require 'monokai-theme)
+(require 'dockerfile-mode)
+(require 'docker-compose-mode)
+
 
 (require 'f2k-common-langs)
 
