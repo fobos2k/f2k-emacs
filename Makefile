@@ -30,7 +30,7 @@ snapshot-build: $(MAIN_ELFILE) copy pkg
 	@pwd
 	@ls -la
 
-release-build: VERSION := $(shell echo $(CI_COMMIT_TAG) | sed 's/^v//')
+release-build: VERSION := $(shell git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//')
 release-build: clean $(MAIN_ELFILE) copy pkg
 	@echo "🏷 Release version: $(VERSION)"
 	@echo release > .built-from
@@ -66,10 +66,13 @@ upload: tar
 		*) echo "❌ Unknown build type in .built-from"; exit 1 ;; \
 	esac
 
+upload-release: VERSION := $(shell git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//')
 upload-release:
 	@echo "🚀 Uploading release to GitLab..."
 	gitlab-release upload \
-		--tag "$(CI_COMMIT_TAG)" \
+		--tag "$(VERSION)" \
+		--name "Release $(VERSION)" \
+		--description "$$(git log -1 --pretty=%B)" \
 		--assets "f2k-config-*.tar.gz"
 
 upload-snapshot:
