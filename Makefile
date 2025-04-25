@@ -68,7 +68,9 @@ upload: tar
 
 upload-release:
 	@echo "🚀 Uploading release to GitLab..."
-	# здесь будет логика curl + создание GitLab Release
+	gitlab-release upload \
+		--tag "$(CI_COMMIT_TAG)" \
+		--assets "f2k-config-*.tar.gz"
 
 upload-snapshot:
 	@echo "📦 Snapshot build — skipping release upload."
