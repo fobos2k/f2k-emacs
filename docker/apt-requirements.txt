@@ -1,0 +1,15 @@
+ca-certificates
+curl
+dbus-x11
+emacs
+emacs
+fonts-firacode
+git
+i3
+locales
+sudo
+terminology
+wget
+x11-xserver-utils
+zsh
+# libeet-bin
