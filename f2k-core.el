@@ -1,7 +1,5 @@
 ;;; f2k-core.el --- Core config for f2k configuration -*- lexical-binding: t; -*-
 
-(package-initialize)
-
 ;; Indications
 (global-display-line-numbers-mode t)
 (column-number-mode t)
@@ -53,8 +51,8 @@
   (yas-global-mode 1))
 
 ;; Dired enhancements
-(setq dired-dwim-target t          ; умная цель при копировании
-      dired-listing-switches "-alh") ; человекочитаемый формат
+(setq dired-dwim-target t               ; умная цель при копировании
+      dired-listing-switches "-alh")    ; человекочитаемый формат
 
 (put 'dired-find-alternate-file 'disabled nil) ; reuse buffer
 (require 'dired-x) ; дополнительные функции (C-x C-j и пр.)
@@ -66,13 +64,10 @@
                                 (project-dired "Dired")
                                 (project-shell "Shell")))
 
-
 ;; Misc
 (setq display-time-24hr-format t)
 (display-time-mode t)
 (ido-mode t)
-
-(require 'f2k-c-cpp)
 
 (provide 'f2k-core)
 
