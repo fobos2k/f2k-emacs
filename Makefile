@@ -27,10 +27,8 @@ release: release-build tar upload
 snapshot-build: $(MAIN_ELFILE) copy pkg
 	@echo "📦 Snapshot version: $(VERSION)"
 	@echo snapshot > .built-from
-	@pwd
-	@ls -la
 
-release-build: VERSION := $(shell git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//')
+# release-build: VERSION ?= $(shell git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//')
 release-build: clean $(MAIN_ELFILE) copy pkg
 	@echo "🏷 Release version: $(VERSION)"
 	@echo release > .built-from
@@ -66,7 +64,7 @@ upload: tar
 		*) echo "❌ Unknown build type in .built-from"; exit 1 ;; \
 	esac
 
-upload-release: VERSION := $(shell git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//')
+# upload-release: VERSION ?= $(shell git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//')
 upload-release:
 	@echo "🚀 Uploading release to GitLab..."
 	gitlab-release upload \
