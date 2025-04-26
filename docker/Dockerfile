@@ -5,7 +5,7 @@ LABEL maintainer="developer@frenkel.org.il"
 ARG APP_USER=developer
 ARG APP_APT_PACKAGES=apt-requirements.txt
 ARG APP_OHMYZSH_URL=https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
-
+ARG APP_UID=1234
 
 ENV APP_HOME=/home/${APP_USER}
 ENV APP_TEMP=/tmp
@@ -18,7 +18,7 @@ RUN export DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -yy
 RUN apt-get upgrade -yy 
 RUN apt-get install -y $(sed 's/#.*//' ${APP_TEMP}/${APP_APT_PACKAGES} | xargs)
-RUN useradd -mUu 1234 -G sudo --shell ${APP_SHELL} ${APP_USER}
+RUN useradd -mUu ${APP_UID} -G sudo --shell ${APP_SHELL} ${APP_USER}
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
 RUN locale-gen
 RUN mkdir -p ${APP_HOME}/.ssh

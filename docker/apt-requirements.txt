@@ -1,15 +1,18 @@
 ca-certificates
+clang
+cmake
 curl
 dbus-x11
 emacs
-emacs
 fonts-firacode
+g++
 git
 i3
 locales
+make
 sudo
 terminology
+unzip
 wget
 x11-xserver-utils
 zsh
-# libeet-bin
