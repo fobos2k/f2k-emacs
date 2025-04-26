@@ -1,5 +1,6 @@
 ca-certificates
 clang
+clangd
 cmake
 curl
 dbus-x11
