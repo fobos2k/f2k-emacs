@@ -12,6 +12,7 @@
 (require 'cmake-mode)
 (require 'clang-format)
 (require 'electric-spacing)
+(require 'lsp-mode)
 
 (defun f2k-clang-format-buffer-safe ()
   "Format current buffer with clang-format if appropriate."
