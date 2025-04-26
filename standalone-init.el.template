@@ -7,3 +7,5 @@
 
 (require 'f2k-core)
 (require 'f2k-c-cpp)
+
+(setq custom-file (make-temp-file "emacs-custom-"))
