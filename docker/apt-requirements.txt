@@ -6,7 +6,7 @@ curl
 dbus-x11
 emacs
 fonts-firacode
-g++
+gcc
 git
 i3
 locales
