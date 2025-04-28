@@ -1,5 +1,6 @@
 List of packages for standalone:
 
+```
 PS C:\Users\fobos\_develop\emacs\f2k-config> ls C:\Users\fobos\AppData\Roaming\.emacs.d\elpa\
 
     Directory: C:\Users\fobos\AppData\Roaming\.emacs.d\elpa
@@ -28,3 +29,4 @@ d----          28/04/2025    22:39                orderless-20250316.2046
 d----          28/04/2025    19:12                powershell-20250417.2013
 d----          28/04/2025    22:39                s-20220902.1511
 d----          28/04/2025    22:42                spinner-1.7.4
+```
