@@ -1,5 +1,7 @@
 *~
+\#.\#
 .built-from
 f2k-config-*.tar.gz
 
 dist/
+elpa/

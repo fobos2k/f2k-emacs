@@ -1,4 +1,4 @@
-;;; f2k-appearance.el --- Appearance config for f2k configuration -*- lexical-binding: t; -*-
+;;; f2k-ui.el --- Appearance config for f2k configuration -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -52,5 +52,5 @@
 (display-time-mode t)
 (ido-mode t)
 
-(provide 'f2k-appearance)
-;;; f2k-appearance.el ends here
+(provide 'f2k-ui)
+;;; f2k-ui.el ends here
