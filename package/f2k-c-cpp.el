@@ -1,105 +1,71 @@
-;;; f2k-c-cpp.el --- C/C++ language settings -*- lexical-binding: t -*-
+;;; f2k-c-cpp.el --- C/C++ language support -*- lexical-binding: t -*-
 
 ;;; Commentary:
-;; Setup for C, C++ and CMake development:
-;; - Formatting via clang-format
-;; - Proper indentation settings
-;; - Electric spacing
-;; - LSP integration (clangd)
+;; Setup for C/C++ development with:
+;; - LSP (clangd)
+;; - clang-format on save
+;; - indentation
+;; - optional electric spacing
+;; - corfu + cape completion
+;; - auto hook installation
 
 ;;; Code:
 
-(require 'cmake-mode)
-(require 'clang-format)
-(require 'electric-spacing)
+(f2k-require :require 'cmake-mode)
+(f2k-require :require 'clang-format)
+(f2k-require :require 'electric-spacing)
 
-;; Optional LSP components
-(require 'lsp-mode)
-(require 'lsp-lens)
-(require 'lsp-modeline)
-(require 'lsp-headerline)
-(require 'corfu)
-(require 'cape)
-(require 'orderless)
+(f2k-require :require 'lsp-mode)
+(f2k-require :require 'lsp-ui)
+(f2k-require :require 'lsp-headerline)
 
-(defun f2k-clang-format-buffer-safe ()
-  "Format current buffer with clang-format if appropriate."
+(f2k-require :require 'corfu
+             :then (lambda () (corfu-mode 1)))
+
+(f2k-require :require 'cape)
+
+(defun f2k/setup-c-cpp-style ()
+  "Configure common settings for C/C++ development."
   (interactive)
-  (when (and (derived-mode-p 'c-mode 'c++-mode)
-             (> (buffer-size) 0))
-    (message "🔥 formatting via clang-format-buffer")
-    (clang-format-buffer)))
 
-(defun f2k-cmake-setup ()
-  "Common setup for CMake development: formatting, indent, electric spacing."
-  (setq-local cmake-tab-width 4)
-  (lsp-deferred))
-
-(defun f2k-setup-c-cpp-style ()
-  "Common setup for C/C++ development: formatting, indent, electric spacing."
-  (interactive)
-  ;; Indentation settings
+  ;; Indentation
   (setq-local c-basic-offset 4)
   (setq-local tab-width 4)
   (setq-local indent-tabs-mode nil)
 
-  ;; Use .clang-format from project
+  ;; clang-format before save
   (setq-local clang-format-style "file")
+  (add-hook 'before-save-hook #'f2k/clang-format-buffer-safe nil t)
 
-  ;; Auto-format buffer before save
-  (add-hook 'before-save-hook #'f2k-clang-format-buffer-safe nil t)
-
-  ;; Enable electric-spacing if available
-  (when (featurep 'electric-spacing-mode)
+  ;; Optional electric spacing
+  (when (fboundp 'electric-spacing-mode)
     (electric-spacing-mode 1))
 
-  ;; Enable LSP if available
-  (when (featurep 'lsp-mode)
-    (require 'lsp-completion)
-    (lsp-deferred)
-    (setq-local lsp-completion-provider :capf)
+  ;; Setup LSP
+  (when (fboundp 'lsp)
+    (lsp))
+  (when (fboundp 'lsp-headerline-breadcrumb-mode)
+    (lsp-headerline-breadcrumb-mode 1))
 
-    ;; Additional LSP UI features
-    (when (featurep 'lsp-lens)
-      (lsp-lens-mode 1))
-    (when (featurep 'lsp-headerline)
-      (setq lsp-headerline-breadcrumb-enable t))
-    (when (featurep 'lsp-modeline)
-      (setq lsp-modeline-code-actions-enable t)))
+  ;; Setup CAPE for LSP + other backends
+  (when (and (fboundp 'cape-capf-super)
+             (boundp 'completion-at-point-functions))
+    (setq-local completion-at-point-functions
+                (list (cape-capf-super
+                       #'lsp-completion-at-point
+                       #'cape-dabbrev
+                       #'cape-file)))))
 
-  ;; Setup CAPE completions
-  (when (featurep 'cape)
-    (add-to-list 'completion-at-point-functions #'cape-dabbrev))
+(defun f2k/clang-format-buffer-safe ()
+  "Format buffer with clang-format if available, suppressing errors."
+  (when (fboundp 'clang-format-buffer)
+    (condition-case err
+        (clang-format-buffer)
+      (error (message "[f2k] clang-format failed: %s" (error-message-string err))))))
 
-  ;; Enable corfu
-  (when (featurep 'corfu)
-    (corfu-mode 1)
-    (setq corfu-auto t
-          corfu-auto-delay 0.2
-          corfu-auto-prefix 1
-          corfu-min-width 40
-          corfu-max-width 80
-          corfu-preview-current nil))
-  (setq tab-always-indent 'complete)
-
-
-  (message "🔥 f2k-setup-c-cpp-style: C/C++ style applied"))
-
-;; Hooks
-(add-hook 'c-mode-hook #'lsp-deferred)
-(add-hook 'c++-mode-hook #'lsp-deferred)
-
-(add-hook 'c-mode-hook #'f2k-setup-c-cpp-style)
-(add-hook 'c++-mode-hook #'f2k-setup-c-cpp-style)
-
-(add-hook 'cmake-mode-hook #'f2k-cmake-setup)
-
-;; Additional Completion settings if available
-(when (and (featurep 'corfu) (featurep 'orderless))
-  (setq completion-styles '(orderless)
-        completion-category-defaults nil
-        completion-category-overrides '((file (styles partial-completion)))))
+;; Automatically activate in C-like modes
+(dolist (hook '(c-mode-hook c++-mode-hook objc-mode-hook))
+  (add-hook hook #'f2k/setup-c-cpp-style))
 
 (provide 'f2k-c-cpp)
-
 ;;; f2k-c-cpp.el ends here
