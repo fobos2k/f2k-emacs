@@ -1,0 +1,34 @@
+;;; early-init.el --- Early init for Emacs-F2K -*- lexical-binding: t; -*-
+
+(defvar user-config-directory (expand-file-name "user-config/" user-emacs-directory)
+  "Path to the user-config directory. Root folder for f2k config.")
+
+(defvar user-config-core "f2k-core"
+  "Core module for user config.")
+
+(defvar user-config-main "f2k-config-init"
+  "Main init function for user config.")
+
+(defvar user-init-profile nil
+  "User init profile. Can be 'standalone' for a standalone configuration. nil - default profile.")
+
+
+(setq package-enable-at-startup nil)
+(setq inhibit-startup-message t)
+(setq frame-inhibit-implied-resize t)
+
+;; Запускаем в полноэкранном режиме
+(add-to-list 'default-frame-alist
+             '(fullscreen . maximized))
+
+;; Прочие визуальные параметры
+(setq default-frame-alist
+      (append '((menu-bar-lines . 0)
+                (tool-bar-lines . 0)
+                (vertical-scroll-bars))
+              default-frame-alist))
+
+;; Portable config
+(setq user-emacs-directory (file-name-directory (or load-file-name buffer-file-name)))
+
+;;; early-init.el ends here

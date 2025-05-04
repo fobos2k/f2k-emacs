@@ -1,0 +1,13 @@
+;;; init.el --- Bootstrap Emacs-F2K configuration -*- lexical-binding: t -*-
+
+;; Ensure user-config-directory is in load-path
+(add-to-list 'load-path user-config-directory)
+
+;; Load the core module
+(require (intern user-config-core))
+
+;; Call the main init function with the selected profile
+(funcall (intern user-config-main)
+         (or user-init-profile 'default))
+
+;;; init.el ends here
