@@ -18,6 +18,7 @@
 (f2k-require :require 'lsp-mode)
 (f2k-require :require 'lsp-ui)
 (f2k-require :require 'lsp-headerline)
+(f2k-require :require 'lsp-modeline)
 
 (f2k-require :require 'corfu
              :then (lambda () (corfu-mode 1)))
@@ -66,6 +67,8 @@
 ;; Automatically activate in C-like modes
 (dolist (hook '(c-mode-hook c++-mode-hook objc-mode-hook))
   (add-hook hook #'f2k/setup-c-cpp-style))
+
+(add-hook 'cmake-mode-hook #'lsp-deferred)
 
 (provide 'f2k-c-cpp)
 ;;; f2k-c-cpp.el ends here
