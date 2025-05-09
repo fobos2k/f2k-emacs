@@ -14,6 +14,7 @@
 
 
 (defun f2k--corfu-setup()
+  (message "[f2k] CORFU setup...")
   (setq corfu-cycle t)
   (setq corfu-auto t)
   (setq corfu-auto-delay 0.2)
@@ -23,6 +24,7 @@
 
 (defun f2k--common-langs-setup()
   "Common program languages hook"
+  (message "[f2k] Common programming languages setup...")
   (setq display-fill-column-indicator-column 120)
   (display-fill-column-indicator-mode)
   (f2k--corfu-setup)
@@ -32,13 +34,17 @@
 
 (add-hook 'prog-mode-hook 'f2k--common-langs-setup)
 
+;; (add-hook 'emacs-lisp-mode-hook #'lsp-deferred)
+
 (add-hook 'lsp-mode-hook
           (lambda()
             (setq lsp-headerline-breadcrumb-enable t)))
 
-(add-hook 'shell-script-mode-hook
+(add-hook 'sh-mode-hook
           (lambda ()
+            (lsp-deferred)
             (setq-local electric-spacing-mode -1)))
+
 
 (f2k-require :require 'f2k-c-cpp)
 
