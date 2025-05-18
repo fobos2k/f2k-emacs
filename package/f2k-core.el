@@ -38,6 +38,9 @@
   (f2k-require :require 'f2k-ui)
   (f2k-require :require 'f2k-project)
 
+  (f2k-require :require 'dockerfile-mode)
+  (f2k-require :require 'docker-compose-mode)
+  
   )
 
 (defun f2k--init-profile-default ()
